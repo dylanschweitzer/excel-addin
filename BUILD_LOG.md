@@ -1,6 +1,6 @@
 # Excel Add-in: Copy Cell for LLM - Build Log
 
-**Last Updated:** 2026-01-20
+**Last Updated:** 2026-01-19
 
 ## Project Overview
 
@@ -9,9 +9,25 @@ Excel add-in that adds a ribbon button to copy selected cell(s) reference and co
 **Output format:**
 - Single cell: `A2: value`
 - Multiple cells: Each cell on its own line
+- Empty cells: `A2: [empty]`
+
+## Two Implementations
+
+This project contains two implementations:
+
+1. **Web Add-in** (manifest.xml) - JavaScript-based, hosted on GitHub Pages
+   - Located in root folder
+   - Requires sideloading which is blocked on many Excel versions
+   - **Not recommended** due to installation difficulties
+
+2. **COM Add-in** (VSTO) - C#-based, compiled installer
+   - Located in `com-addin/` folder
+   - Easy installation via setup.exe
+   - **Recommended approach**
 
 ## Completed
 
+### Initial Web Add-in (2026-01-19)
 - [x] Initialize git repository
 - [x] Create BUILD_LOG.md
 - [x] Create manifest.xml with ribbon button configuration
@@ -20,67 +36,87 @@ Excel add-in that adds a ribbon button to copy selected cell(s) reference and co
 - [x] Create icon assets (16x16, 32x32, 64x64, 80x80 PNG)
 - [x] Restructure for GitHub Pages static hosting
 - [x] Create README.md with user and admin instructions
-- [x] Remove Node.js dev server dependency
+- [x] Push to GitHub (https://github.com/dylanschweitzer/excel-addin)
+- [x] Enable GitHub Pages
+- [x] Replace REPLACE_WITH_YOUR_URL in manifest.xml with actual GitHub Pages URL
 
-## In Progress
-
-(none)
-
-## Not Started
-
-- [x] Push to GitHub and enable GitHub Pages
-- [x] Replace REPLACE_WITH_YOUR_URL in manifest.xml with actual GitHub Pages URL (7 places)
-- [ ] Test in Excel Desktop
-- [ ] Test in Excel Online
-- [ ] Consider adding keyboard shortcut
-
-## Resume Notes
-
-All code is complete. Next steps:
-1. Create GitHub repo (public)
-2. Push this folder to GitHub
-3. Enable GitHub Pages (Settings → Pages → main branch → root)
-4. Wait for GitHub Pages URL (https://USERNAME.github.io/REPONAME)
-5. Edit manifest.xml: find/replace `REPLACE_WITH_YOUR_URL` with your URL
-6. Commit and push the updated manifest
-7. Test by loading manifest.xml in Excel
+### COM Add-in Development (2026-01-19)
+- [x] Discover web add-in sideloading is blocked on consumer Excel
+- [x] Research alternatives (VBA .xlam, COM add-in)
+- [x] Create VSTO COM add-in project structure
+- [x] Write ThisAddIn.cs with copy functionality
+- [x] Write Ribbon1.cs for ribbon extensibility
+- [x] Write Ribbon1.xml for ribbon UI definition
+- [x] Build and test in Visual Studio
+- [x] Create ClickOnce installer (setup.exe)
+- [x] Document Visual Studio build process
 
 ## Project Structure
 
 ```
 excel-addin/
-├── manifest.xml      # Add-in manifest (edit REPLACE_WITH_YOUR_URL)
-├── commands.html     # Entry point for ribbon commands
-├── commands.js       # Copy functionality
-├── README.md         # User and admin instructions
 ├── BUILD_LOG.md
+├── README.md
+├── VISUAL_STUDIO_GUIDE.md    # Step-by-step VS build instructions
 ├── .gitignore
-├── icon.svg          # Source icon
-└── assets/
-    ├── icon-16.png
-    ├── icon-32.png
-    ├── icon-64.png
-    └── icon-80.png
+│
+├── # Web Add-in (not recommended - sideloading blocked)
+├── manifest.xml
+├── commands.html
+├── commands.js
+├── icon.svg
+├── assets/
+│   ├── icon-16.png
+│   ├── icon-32.png
+│   ├── icon-64.png
+│   └── icon-80.png
+│
+└── com-addin/                # COM Add-in (recommended)
+    ├── CopyForLLM.sln
+    └── CopyForLLM/
+        ├── CopyForLLM.csproj
+        ├── ThisAddIn.cs
+        ├── ThisAddIn.Designer.cs
+        ├── Ribbon1.cs
+        ├── Ribbon1.xml
+        └── Properties/
+            └── AssemblyInfo.cs
 ```
+
+## How It Works
+
+1. User selects cell(s) in Excel
+2. Clicks "Copy for LLM" button in the "LLM Copy" ribbon tab
+3. Add-in reads selected range addresses and values
+4. Formats as `CellRef: value` (one per line for multiple cells)
+5. Copies to clipboard
 
 ## Deployment
 
-This add-in uses GitHub Pages for hosting (no server required).
+### COM Add-in (Recommended)
+1. Open `com-addin/CopyForLLM.sln` in Visual Studio
+2. Build → Publish to create setup.exe
+3. Distribute setup.exe to users
+4. Users run setup.exe to install
 
-1. Push to GitHub
-2. Enable GitHub Pages (Settings → Pages → main branch)
-3. Replace `REPLACE_WITH_YOUR_URL` in manifest.xml with your GitHub Pages URL
-4. Distribute manifest.xml to users
+### Web Add-in (Limited Use)
+- Hosted at: https://dylanschweitzer.github.io/excel-addin
+- Manifest: https://dylanschweitzer.github.io/excel-addin/manifest.xml
+- Only works if Excel allows sideloading (enterprise/developer setups)
 
 ## Notes
 
-### How It Works
-1. User selects cell(s) in Excel
-2. Clicks "Copy for LLM" button in the "LLM Copy" ribbon tab
-3. Add-in reads selected range address and values
-4. Formats as `CellRef: value` (one per line for multiple cells)
-5. Copies to clipboard via `navigator.clipboard.writeText()`
+### Why COM Add-in?
+The original web add-in approach failed because:
+- Modern consumer Excel versions block sideloading of web add-ins
+- "Upload My Add-in" option not available without enterprise/developer settings
+- Trusted Add-in Catalogs method is complex and unreliable
 
-### User Experience
-- Users only need to: download manifest.xml → load in Excel → use button
-- No Node.js, no command line, no local server
+The COM add-in approach works because:
+- Installs via standard Windows installer (setup.exe)
+- No special Excel settings required
+- Ribbon button appears automatically after installation
+
+### External Dependencies
+- **Web add-in**: Loads Microsoft's office.js from https://appsforoffice.microsoft.com
+- **COM add-in**: Requires VSTO Runtime (included in installer)

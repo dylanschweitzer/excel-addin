@@ -11,108 +11,42 @@ C2: 2024-01-15
 
 ---
 
-## For Users (Windows)
+## Installation (Recommended: COM Add-in)
 
-### Installation
+### For End Users
 
-1. Download the `manifest.xml` file from the person who set up this add-in
-2. Open **Excel**
-3. Go to **Insert** → **Get Add-ins** → **MY ADD-INS** → **Upload My Add-in**
-4. Select the `manifest.xml` file and click **Upload**
+1. Get the installer from whoever set up this add-in (a zip file containing setup.exe)
+2. Unzip and run **setup.exe**
+3. Click **Install** when prompted
+4. Open Excel - the **LLM Copy** tab appears in the ribbon
 
-A new **LLM Copy** tab appears in your ribbon.
+That's it!
 
-### Usage
+### To Uninstall
+
+Windows Settings → Apps → search "CopyForLLM" → Uninstall
+
+---
+
+## Usage
 
 1. Select any cell or range (e.g., A1:D10)
-2. Click the **LLM Copy** tab
+2. Click the **LLM Copy** tab in the ribbon
 3. Click **Copy for LLM**
 4. Paste (Ctrl+V) into your LLM chat
 
-That's it.
-
 ---
 
-## For Administrators (One-Time Setup)
+## For Developers / Building from Source
 
-To make this add-in available to users, you need to host the files on a web server with HTTPS. The easiest free option is GitHub Pages.
+See [VISUAL_STUDIO_GUIDE.md](VISUAL_STUDIO_GUIDE.md) for detailed instructions on building the COM add-in with Visual Studio.
 
-### Step 1: Create a GitHub Repository
+### Quick Summary
 
-1. Go to https://github.com and sign in (or create an account)
-2. Click **New repository**
-3. Name it `excel-addin` (or whatever you prefer)
-4. Make it **Public**
-5. Click **Create repository**
-
-### Step 2: Upload the Files
-
-Upload these files to your repository:
-```
-excel-addin/
-├── manifest.xml
-├── commands.html
-├── commands.js
-└── assets/
-    ├── icon-16.png
-    ├── icon-32.png
-    ├── icon-64.png
-    └── icon-80.png
-```
-
-### Step 3: Enable GitHub Pages
-
-1. Go to your repository's **Settings**
-2. Click **Pages** in the left sidebar
-3. Under "Source", select **Deploy from a branch**
-4. Select **main** branch and **/ (root)** folder
-5. Click **Save**
-
-Wait 1-2 minutes. Your site will be live at:
-```
-https://YOUR_USERNAME.github.io/excel-addin/
-```
-
-### Step 4: Update the Manifest
-
-Edit `manifest.xml` and replace all instances of `REPLACE_WITH_YOUR_URL` with your GitHub Pages URL.
-
-For example, if your GitHub username is `johndoe` and your repo is `excel-addin`, replace:
-```
-REPLACE_WITH_YOUR_URL
-```
-with:
-```
-https://johndoe.github.io/excel-addin
-```
-
-There are 7 places to replace in the manifest.
-
-### Step 5: Commit the Updated Manifest
-
-Push the updated `manifest.xml` to GitHub. Wait a minute for GitHub Pages to update.
-
-### Step 6: Distribute to Users
-
-Send users the `manifest.xml` file (or a link to download it from your GitHub repo). They follow the simple "For Users" instructions above.
-
----
-
-## Troubleshooting
-
-**Add-in won't load / "We can't load the add-in" error**
-- Make sure GitHub Pages is enabled and the URL works
-- Visit `https://YOUR_USERNAME.github.io/excel-addin/commands.html` in a browser - it should load without errors
-- Ensure all `REPLACE_WITH_YOUR_URL` instances are replaced in the manifest
-
-**Button doesn't copy anything**
-- Make sure cells are selected before clicking the button
-- Try in Excel Online (browser) if desktop has issues
-- Check browser console for errors (F12 in Excel Online)
-
-**Ribbon tab doesn't appear**
-- Close and reopen Excel
-- Remove and re-add the add-in
+1. Install Visual Studio with **Office/SharePoint development** workload
+2. Open `com-addin/CopyForLLM.sln`
+3. Build → Publish CopyForLLM
+4. Distribute the generated setup.exe
 
 ---
 
@@ -123,3 +57,50 @@ Send users the `manifest.xml` file (or a link to download it from your GitHub re
 | Single cell A2 | `A2: Hello` |
 | Empty cell | `A2: [empty]` |
 | Range A2:B3 | `A2: Hello`<br>`B2: World`<br>`A3: Foo`<br>`B3: Bar` |
+
+---
+
+## Alternative: Web Add-in (Limited)
+
+This repo also contains a web-based add-in (manifest.xml), but it's **not recommended** because:
+- Most consumer Excel versions block sideloading
+- Requires "Upload My Add-in" option which isn't available in standard Excel
+
+If you have an enterprise or developer Excel setup that allows sideloading:
+- Manifest URL: https://dylanschweitzer.github.io/excel-addin/manifest.xml
+
+---
+
+## Troubleshooting
+
+**Ribbon tab doesn't appear after install**
+- Close and reopen Excel
+- Check File → Options → Add-ins → COM Add-ins → Go → ensure CopyForLLM is checked
+
+**Install fails**
+- You may need the VSTO Runtime: https://aka.ms/VSTORuntime
+- Install it, then run setup.exe again
+
+**Button doesn't copy anything**
+- Make sure cells are selected before clicking
+- Check that clipboard access isn't blocked by security software
+
+---
+
+## Project Structure
+
+```
+excel-addin/
+├── com-addin/           # COM Add-in source (recommended)
+│   └── CopyForLLM/
+├── manifest.xml         # Web add-in (limited use)
+├── commands.js
+├── commands.html
+└── assets/
+```
+
+---
+
+## License
+
+MIT
