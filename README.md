@@ -15,10 +15,11 @@ C2: 2024-01-15
 
 ### For End Users
 
-1. Get the installer from whoever set up this add-in (a zip file containing setup.exe)
-2. Unzip and run **setup.exe**
-3. Click **Install** when prompted
-4. Open Excel - the **LLM Copy** tab appears in the ribbon
+1. **[Download the installer](https://github.com/dylanschweitzer/excel-addin/releases/latest/download/CopyForLLM-v1.0.0-installer.zip)** (or visit [Releases](https://github.com/dylanschweitzer/excel-addin/releases))
+2. Extract the zip file
+3. Run **setup.exe**
+4. Click **Install** when prompted
+5. Open Excel - the **LLM Copy** tab appears in the ribbon
 
 That's it!
 

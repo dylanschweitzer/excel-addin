@@ -1,6 +1,6 @@
 # Excel Add-in: Copy Cell for LLM - Build Log
 
-**Last Updated:** 2026-01-19
+**Last Updated:** 2026-01-20
 
 ## Project Overview
 
@@ -50,6 +50,12 @@ This project contains two implementations:
 - [x] Build and test in Visual Studio
 - [x] Create ClickOnce installer (setup.exe)
 - [x] Document Visual Studio build process
+
+### GitHub Release (2026-01-20)
+- [x] Package installer files (setup.exe, CopyForLLM.vsto, Application Files/) into zip
+- [x] Create GitHub Release v1.0.0
+- [x] Upload installer zip as release asset
+- [x] Update README.md with direct download link
 
 ## Project Structure
 
