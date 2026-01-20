@@ -28,8 +28,8 @@ Excel add-in that adds a ribbon button to copy selected cell(s) reference and co
 
 ## Not Started
 
-- [ ] Push to GitHub and enable GitHub Pages
-- [ ] Replace REPLACE_WITH_YOUR_URL in manifest.xml with actual GitHub Pages URL (7 places)
+- [x] Push to GitHub and enable GitHub Pages
+- [x] Replace REPLACE_WITH_YOUR_URL in manifest.xml with actual GitHub Pages URL (7 places)
 - [ ] Test in Excel Desktop
 - [ ] Test in Excel Online
 - [ ] Consider adding keyboard shortcut
