@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<customUI xmlns="http://schemas.microsoft.com/office/2009/07/customui" onLoad="Ribbon_Load">
+  <ribbon>
+    <tabs>
+      <tab id="LLMCopyTab" label="LLM Copy">
+        <group id="CopyGroup" label="Cell Tools">
+          <button id="CopyForLLMButton"
+                  label="Copy for LLM"
+                  size="large"
+                  onAction="OnCopyForLLM"
+                  imageMso="Copy"
+                  screentip="Copy for LLM"
+                  supertip="Copy selected cell(s) reference and contents to clipboard in a format suitable for pasting into LLMs like ChatGPT or Claude."/>
+        </group>
+      </tab>
+    </tabs>
+  </ribbon>
+</customUI>
