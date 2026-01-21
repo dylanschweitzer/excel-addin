@@ -1,6 +1,6 @@
 # Excel Add-in: Copy Cell for LLM - Build Log
 
-**Last Updated:** 2026-01-20
+**Last Updated:** 2026-01-21
 
 ## Project Overview
 
@@ -63,37 +63,51 @@ This project contains two implementations:
 - [x] Add "Check for Updates" button to ribbon in new "About" group
 - [x] Implement OnCheckForUpdates async handler in Ribbon1.cs
 
+### Excel-DNA v1.1 Release (2026-01-21)
+- [x] Create Excel-DNA version (no Visual Studio required, builds with dotnet CLI)
+- [x] Copy Values, Copy Formulas, Copy Both buttons
+- [x] Prepare to Share button (reset A1, zoom 100% on all sheets)
+- [x] Settings button with Ctrl+; blue/black font toggle (disabled by default)
+- [x] Fixed Prepare to Share error with hidden sheets (use Goto instead of Select)
+- [x] Build and test on Windows
+- [x] Push excel-dna/ folder to GitHub
+- [x] Create GitHub Release v1.1.0 with .xll files
+- [x] Update README to focus on v1.1 Excel-DNA version
+- [x] Archive v1.0 VSTO version as "Previous Versions"
+
 ## Project Structure
 
 ```
 excel-addin/
 ├── BUILD_LOG.md
 ├── README.md
-├── VISUAL_STUDIO_GUIDE.md    # Step-by-step VS build instructions
+├── VISUAL_STUDIO_GUIDE.md
 ├── .gitignore
 │
-├── # Web Add-in (not recommended - sideloading blocked)
+├── excel-dna/                # v1.1 Excel-DNA (recommended)
+│   ├── CopyForLLM.csproj
+│   ├── Ribbon1.cs
+│   ├── VersionChecker.cs
+│   ├── BUILD_LOG.md
+│   ├── COMPILE_INSTRUCTIONS.md
+│   └── release/              # Pre-built .xll files
+│       ├── CopyForLLM-AddIn64.xll
+│       └── CopyForLLM-AddIn.xll
+│
+├── com-addin/                # v1.0 VSTO (archived)
+│   ├── CopyForLLM.sln
+│   └── CopyForLLM/
+│       ├── CopyForLLM.csproj
+│       ├── ThisAddIn.cs
+│       ├── Ribbon1.cs
+│       ├── Ribbon1.xml
+│       └── VersionChecker.cs
+│
+├── # Web Add-in (not recommended)
 ├── manifest.xml
 ├── commands.html
 ├── commands.js
-├── icon.svg
-├── assets/
-│   ├── icon-16.png
-│   ├── icon-32.png
-│   ├── icon-64.png
-│   └── icon-80.png
-│
-└── com-addin/                # COM Add-in (recommended)
-    ├── CopyForLLM.sln
-    └── CopyForLLM/
-        ├── CopyForLLM.csproj
-        ├── ThisAddIn.cs
-        ├── ThisAddIn.Designer.cs
-        ├── Ribbon1.cs
-        ├── Ribbon1.xml
-        ├── VersionChecker.cs     # GitHub API update checker
-        └── Properties/
-            └── AssemblyInfo.cs
+└── assets/
 ```
 
 ## How It Works

@@ -118,9 +118,8 @@ Opens a dialog to configure add-in options:
 - [x] Blue-black font toggle (disabled by default)
 - [x] Fixed Prepare to Share error with hidden sheets
 - [x] Build tested on Windows
-
-### Not Started
-- [ ] Create GitHub release
+- [x] Create GitHub release v1.1.0
+- [x] Update main README to focus on v1.1
 
 ---
 
