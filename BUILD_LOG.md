@@ -57,6 +57,12 @@ This project contains two implementations:
 - [x] Upload installer zip as release asset
 - [x] Update README.md with direct download link
 
+### Check for Updates Feature (2026-01-20)
+- [x] Add System.Net.Http and System.Web.Extensions references to csproj
+- [x] Create VersionChecker.cs service class (GitHub API integration)
+- [x] Add "Check for Updates" button to ribbon in new "About" group
+- [x] Implement OnCheckForUpdates async handler in Ribbon1.cs
+
 ## Project Structure
 
 ```
@@ -85,6 +91,7 @@ excel-addin/
         ├── ThisAddIn.Designer.cs
         ├── Ribbon1.cs
         ├── Ribbon1.xml
+        ├── VersionChecker.cs     # GitHub API update checker
         └── Properties/
             └── AssemblyInfo.cs
 ```

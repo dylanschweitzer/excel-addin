@@ -9,6 +9,7 @@
     <RootNamespace>CopyForLLM</RootNamespace>
     <AssemblyName>CopyForLLM</AssemblyName>
     <OfficeApplicationDescription>Microsoft Excel</OfficeApplicationDescription>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,6 +31,8 @@
     <Reference Include="Microsoft.VisualStudio.Tools.Applications.Runtime">
       <EmbedInteropTypes>false</EmbedInteropTypes>
     </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web.Extensions" />
   </ItemGroup>
 
   <ItemGroup>

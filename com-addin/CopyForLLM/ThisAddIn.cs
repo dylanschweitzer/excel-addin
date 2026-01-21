@@ -54,15 +54,5 @@ namespace CopyForLLM
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        #region VSTO generated code
-
-        private void InternalStartup()
-        {
-            this.Startup += new EventHandler(ThisAddIn_Startup);
-            this.Shutdown += new EventHandler(ThisAddIn_Shutdown);
-        }
-
-        #endregion
     }
 }

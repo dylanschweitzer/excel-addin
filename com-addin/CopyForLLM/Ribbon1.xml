@@ -12,6 +12,15 @@
                   screentip="Copy for LLM"
                   supertip="Copy selected cell(s) reference and contents to clipboard in a format suitable for pasting into LLMs like ChatGPT or Claude."/>
         </group>
+        <group id="AboutGroup" label="About">
+          <button id="CheckForUpdatesButton"
+                  label="Check for Updates"
+                  size="normal"
+                  onAction="OnCheckForUpdates"
+                  imageMso="WebPagePreview"
+                  screentip="Check for Updates"
+                  supertip="Check if a newer version of Copy for LLM is available on GitHub."/>
+        </group>
       </tab>
     </tabs>
   </ribbon>

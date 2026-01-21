@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using Office = Microsoft.Office.Core;
 
 namespace CopyForLLM
@@ -34,6 +36,54 @@ namespace CopyForLLM
         public void OnCopyForLLM(Office.IRibbonControl control)
         {
             Globals.ThisAddIn.CopySelectionForLLM();
+        }
+
+        public async void OnCheckForUpdates(Office.IRibbonControl control)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                var result = await VersionChecker.CheckForUpdatesAsync();
+
+                if (!result.Success)
+                {
+                    MessageBox.Show(
+                        $"Could not check for updates.\n\n{result.ErrorMessage}",
+                        "Update Check Failed",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (result.UpdateAvailable)
+                {
+                    var dialogResult = MessageBox.Show(
+                        $"A newer version is available!\n\n" +
+                        $"Current version: {result.CurrentVersion}\n" +
+                        $"Latest version: {result.LatestVersion}\n\n" +
+                        $"Would you like to open the download page?",
+                        "Update Available",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Information);
+
+                    if (dialogResult == DialogResult.Yes && !string.IsNullOrEmpty(result.ReleaseUrl))
+                    {
+                        Process.Start(result.ReleaseUrl);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(
+                        $"You are running the latest version ({result.CurrentVersion}).",
+                        "No Updates Available",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
         }
 
         #endregion
