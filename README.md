@@ -1,4 +1,4 @@
-# Copy Cell for LLM - Excel Add-in
+# Copy for LLM - Excel Add-in
 
 Copy selected Excel cells with their references, formatted for pasting into ChatGPT, Claude, or other LLMs.
 
@@ -6,85 +6,114 @@ Copy selected Excel cells with their references, formatted for pasting into Chat
 ```
 A2: Sales Data
 B2: 1500
-C2: 2024-01-15
+C2: =A2*0.1 → 150
 ```
 
 ---
 
-## Installation (Recommended: COM Add-in)
+## Download
 
-### For End Users
+**[Download CopyForLLM-AddIn64.xll](https://github.com/dylanschweitzer/excel-addin/releases/latest/download/CopyForLLM-AddIn64.xll)** (for 64-bit Excel - most common)
 
-1. **[Download the installer](https://github.com/dylanschweitzer/excel-addin/releases/latest/download/CopyForLLM-v1.0.0-installer.zip)** (or visit [Releases](https://github.com/dylanschweitzer/excel-addin/releases))
-2. Extract the zip file
-3. Run **setup.exe**
-4. Click **Install** when prompted
-5. Open Excel - the **LLM Copy** tab appears in the ribbon
+[Download CopyForLLM-AddIn.xll](https://github.com/dylanschweitzer/excel-addin/releases/latest/download/CopyForLLM-AddIn.xll) (for 32-bit Excel)
 
-That's it!
+---
 
-### To Uninstall
+## Installation
 
-Windows Settings → Apps → search "CopyForLLM" → Uninstall
+1. Download the `.xll` file above
+2. Right-click the file → Properties → check **Unblock** → OK (if present)
+3. Open Excel
+4. Go to **File** → **Options** → **Add-ins**
+5. At the bottom: Manage: **Excel Add-ins** → click **Go...**
+6. Click **Browse...** and select the downloaded `.xll` file
+7. Click **OK**
+8. The **"Copy for LLM"** tab appears in your ribbon
+
+### Requirements
+- Windows with Excel desktop
+- [.NET 8 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/8.0) (you may already have it)
+
+---
+
+## Features
+
+### Copy Values
+Copies selected cells with their calculated values:
+```
+A1: 42
+A2: Hello
+B1: 100
+```
+
+### Copy Formulas
+Copies selected cells with their formulas:
+```
+A1: =SUM(B1:B10)
+A2: Hello
+B1: =A1*2
+```
+
+### Copy Both
+Copies formulas with their calculated values:
+```
+A1: =SUM(B1:B10) → 150
+A2: Hello
+B1: =A1*2 → 300
+```
+
+### Prepare to Share
+Clean up your workbook before sharing:
+- Reset active cell to A1 on all sheets
+- Set zoom to 100% on all sheets
+
+### Settings
+Configure keyboard shortcuts:
+- **Ctrl+;** toggles font color between blue and black (disabled by default)
+
+### Check for Updates
+Checks GitHub for newer versions of the add-in.
 
 ---
 
 ## Usage
 
-1. Select any cell or range (e.g., A1:D10)
-2. Click the **LLM Copy** tab in the ribbon
-3. Click **Copy for LLM**
+1. Select any cells (e.g., A1:D10)
+2. Click the **Copy for LLM** tab in the ribbon
+3. Click **Copy Values**, **Copy Formulas**, or **Copy Both**
 4. Paste (Ctrl+V) into your LLM chat
 
 ---
 
-## For Developers / Building from Source
+## Building from Source
 
-See [VISUAL_STUDIO_GUIDE.md](VISUAL_STUDIO_GUIDE.md) for detailed instructions on building the COM add-in with Visual Studio.
+The add-in uses Excel-DNA and can be built with the .NET CLI (no Visual Studio required).
 
-### Quick Summary
+```bash
+cd excel-dna
+dotnet restore
+dotnet build
+```
 
-1. Install Visual Studio with **Office/SharePoint development** workload
-2. Open `com-addin/CopyForLLM.sln`
-3. Build → Publish CopyForLLM
-4. Distribute the generated setup.exe
+Output: `bin/Debug/net8.0-windows/CopyForLLM-AddIn64.xll`
 
----
-
-## Output Format
-
-| Selection | Output |
-|-----------|--------|
-| Single cell A2 | `A2: Hello` |
-| Empty cell | `A2: [empty]` |
-| Range A2:B3 | `A2: Hello`<br>`B2: World`<br>`A3: Foo`<br>`B3: Bar` |
-
----
-
-## Alternative: Web Add-in (Limited)
-
-This repo also contains a web-based add-in (manifest.xml), but it's **not recommended** because:
-- Most consumer Excel versions block sideloading
-- Requires "Upload My Add-in" option which isn't available in standard Excel
-
-If you have an enterprise or developer Excel setup that allows sideloading:
-- Manifest URL: https://dylanschweitzer.github.io/excel-addin/manifest.xml
+See [excel-dna/COMPILE_INSTRUCTIONS.md](excel-dna/COMPILE_INSTRUCTIONS.md) for detailed steps.
 
 ---
 
 ## Troubleshooting
 
-**Ribbon tab doesn't appear after install**
+**Add-in doesn't load**
+- Make sure you downloaded the correct version (64-bit vs 32-bit)
+- Right-click the .xll file → Properties → Unblock
+- Install [.NET 8 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/8.0)
+
+**Ribbon tab doesn't appear**
 - Close and reopen Excel
-- Check File → Options → Add-ins → COM Add-ins → Go → ensure CopyForLLM is checked
+- Check File → Options → Add-ins → Excel Add-ins → ensure CopyForLLM is checked
 
-**Install fails**
-- You may need the VSTO Runtime: https://aka.ms/VSTORuntime
-- Install it, then run setup.exe again
-
-**Button doesn't copy anything**
-- Make sure cells are selected before clicking
-- Check that clipboard access isn't blocked by security software
+**"Prepare to Share" shows an error**
+- Hidden sheets are now skipped automatically (fixed in v1.1)
 
 ---
 
@@ -92,13 +121,21 @@ If you have an enterprise or developer Excel setup that allows sideloading:
 
 ```
 excel-addin/
-├── com-addin/           # COM Add-in source (recommended)
-│   └── CopyForLLM/
-├── manifest.xml         # Web add-in (limited use)
-├── commands.js
-├── commands.html
-└── assets/
+├── excel-dna/              # v1.1 Excel-DNA source (recommended)
+│   ├── Ribbon1.cs
+│   ├── VersionChecker.cs
+│   ├── CopyForLLM.csproj
+│   └── release/            # Pre-built .xll files
+├── com-addin/              # v1.0 VSTO source (archived)
+├── manifest.xml            # Web add-in (not recommended)
+└── README.md
 ```
+
+---
+
+## Previous Versions
+
+**v1.0 (VSTO/COM Add-in)** - Requires Visual Studio to build and uses an installer. Still available in the `com-addin/` folder and [v1.0.0 release](https://github.com/dylanschweitzer/excel-addin/releases/tag/v1.0.0) but no longer recommended.
 
 ---
 
