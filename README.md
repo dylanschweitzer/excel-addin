@@ -43,7 +43,7 @@ Copies selected cells with their calculated values:
 ```
 A1: 50
 A2: Hello
-B1: 300
+B1: 100
 ```
 
 ### Copy Formulas
@@ -51,7 +51,7 @@ Copies selected cells with their formulas:
 ```
 A1: 50
 A2: Hello
-B1: =A1*6
+B1: =A1*2
 ```
 
 ### Copy Both
@@ -59,7 +59,7 @@ Copies formulas with their calculated values:
 ```
 A1: 50
 A2: Hello
-B1: =A1*6 → 300
+B1: =A1*2 → 100
 ```
 
 ### Prepare to Share
